@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="src/reset.css" rel="stylesheet" type="text/css">
+    <link href="src/index.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header>
+        <img src="img/avatar.jpg" alt="">
+        <h1>Login to Fisher</h1>
+    </header>
+    <section>
+        <h2>Username/Email:</h2>
+        <p>
+            <input type="text" name="username" pattern="[0-9a-zA-Z | _]{1,}" required>
+        </p>
+        <h2>Password:</h2>
+        <p>
+            <input type="password" name="password" pattern="[0-9a-zA-Z]{8,}" required>
+        </p>
+        <p>
+            <input type="submit" value="Login" id="login-submit" onclick="window.location.href='src/home.html'">
+        </p>
+    </section>
+    <p id="register-link">New to Fisher? <a href="src/register.html">Create a new account!</a></p>
+    <footer>
+        Copyright @ 2020 Web Fundamentals. All Rights Reserved. 备案号：19302010013吴逸昕
+    </footer>
+</body>
+</html>

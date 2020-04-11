@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload</title>
+    <link href="reset.css" rel="stylesheet" type="text/css">
+    <link href="navigation.css" rel="stylesheet" type="text/css">
+    <link href="upload.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav>
+    <div class="div-left">
+        <img src="../img/avatar.jpg" alt="" id="avatar-nav" width="28px" height="28px">
+        <a href="home.html" class="link" id="home-nav">Home</a>
+        <a href="browse.html" class="link" id="browse-nav">Browse</a>
+        <a href="search.html" class="link" id="search-nav">Search</a>
+    </div>
+    <div class="dropdown">
+        <button class="dropdown-button">My Account</button>
+        <div class="dropdown-content">
+            <a href="upload.html"><img src="../img/icons/upload.png" alt="" width="20px" height="20px">&nbsp;&nbsp;Upload</a>
+            <a href="myphotos.html"><img src="../img/icons/myphotos.png" alt="" width="20px" height="20px">&nbsp;&nbsp;My Photos</a>
+            <a href="favorites.html"><img src="../img/icons/favorites.png" alt="" width="20px" height="20px">&nbsp;&nbsp;Favorites</a>
+            <a href="../index.html"><img src="../img/icons/login.png" alt="" width="20px" height="20px">&nbsp;&nbsp;Login</a>
+        </div>
+    </div>
+</nav>
+
+<section>
+    <div class="div-title">
+        <h2>Upload</h2>
+    </div>
+    <div id="preview">
+        <p>Not Uploaded</p>
+    </div><!--用来放预览图片的DIV-->
+    <input type="file" id="upload-file" onchange="previewImage(this,320,240)" accept="image/*">
+    <h3>Title:</h3>
+    <input type="text" class="upload-input">
+    <div class="half-block">
+        <h4>Country:</h4>
+        <input type="text" class="upload-input-short">
+    </div>
+    <div class="half-block">
+        <h4>City:</h4>
+        <input type="text" class="upload-input-short">
+    </div>
+    <h3>Description:</h3>
+    <textarea></textarea><br>
+
+    <a href="myphotos.html"><button type="submit" class="submit-button">Submit</button></a>
+</section>
+
+<footer>
+    Copyright @ 2020 Web Fundamentals. All Rights Reserved. 备案号：19302010013吴逸昕
+</footer>
+</body>
+
+<script type="text/javascript">
+    //图片上传预览，非IE则用了HTML5的代码，IE是用了滤镜
+    function previewImage(file, MAXWIDTH, MAXHEIGHT){//MAXWIDTH、MAXHEIGHT与放预览图片的DIV——preview的大小相呼应
+        var div = document.getElementById('preview');
+        if (file.files && file.files[0]) {//HTML5部分
+            div.innerHTML = "<img id='imghead'></img>";
+            var img = document.getElementById('imghead');
+            img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width = rect.width;
+                img.height = rect.height;
+                img.style.marginTop = rect.top + 'px';
+            }
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                img.src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+        else //兼容IE
+        {
+            var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = "<img id='imghead'></img>";
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            div.innerHTML = "<div style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;" + sFilter + src + "\"'></div>";
+        }
+    }
+    //用于计算预览图片的大小
+    function clacImgZoomParam(maxWidth, maxHeight, width, height){
+        var param = {
+            top: 0,
+            left: 0,
+            width: width,
+            height: height
+        };
+        if (width > maxWidth || height > maxHeight) {
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+            if (rateWidth > rateHeight) {
+                param.width = maxWidth;
+                param.height = Math.round(height / rateWidth);
+            }
+            else {
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+</script>
+
+</html>
